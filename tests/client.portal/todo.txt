@@ -1,0 +1,5 @@
+# TODOs for /tests/client.portal/
+
+- [ ] Work on this folder: implement required tests and functionalities.
+- [ ] Add test cases for client portal features.
+- [ ] Review and update documentation as needed.
