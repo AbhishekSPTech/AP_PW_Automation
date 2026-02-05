@@ -1,150 +1,82 @@
-# AP_PW_Automation
-# Playwright Test Automation -- Onboarding & Execution Guide
+# Playwright SDET Framework
 
-This repository contains an end-to-end **Playwright Test Automation
-Framework** designed for UI and API testing with CI support.
+A comprehensive Playwright testing framework following clean architecture principles with clear separation of concerns.
 
-This README helps new team members quickly understand: - Project
-structure - How to run tests - Environment handling - Commenting
-standards - Best practices
+## Architecture Principles
 
-------------------------------------------------------------------------
+✅ **No duplicated layers** - Each layer has a single responsibility  
+✅ **Tests contain zero logic** - Business logic lives in the framework  
+✅ **UI never manages data** - Data operations happen in API layer  
+✅ **Fixtures enforce isolation** - Each test runs independently  
+✅ **Utilities are framework-only** - Test files use only intent-based methods  
+✅ **Switching Playwright → Cypress later is feasible** - Framework abstraction allows tool changes
 
-## Project Overview
+## Project Structure
 
-This automation framework supports:
-
--   UI testing on **Chromium, Firefox, WebKit**
--   API / service-level testing
--   Environment-based execution (`qa`, `staging`, `prod`)
--   Authentication reuse via `storageState`
--   CI-friendly execution with retries and reports
-
-------------------------------------------------------------------------
-
-## Folder Structure
-
-    ├── env/
-    │   ├── .env.qa
-    │   ├── .env.staging
-    │   └── .env.prod
-    │
-    ├── tests/
-    │   ├── auth/
-    │   │   └── storage/
-    │   │       └── client.user.json
-    │   │
-    │   ├── setup/
-    │   │   ├── login.client.setup.ts
-    │   │   └── services.setup.ts
-    │   │
-    │   ├── client/
-    │   │   └── example.client.spec.ts
-    │   │
-    │   └── services/
-    │       └── quote.service.quote.spec.ts
-    │
-    ├── playwright.config.ts
-    └── test-results/
-
-------------------------------------------------------------------------
-
-## Environment Configuration
-
-The framework loads environment variables dynamically using the `ENV`
-variable.
-
-### Available Environments
-
--   `qa` (default)
--   `staging`
--   `prod`
-
-### Usage
-
-``` bash
-ENV=qa npx playwright test
+```
+playwright-sdet-framework/
+│
+├── api/                          # API Layer (Data Control)
+│   ├── clients/                  # Service clients
+│   │   ├── auth.client.ts
+│   │   ├── user.client.ts
+│   │   └── order.client.ts
+│   └── models/                   # Data models
+│       └── user.model.ts
+│
+├── ui/                           # UI Layer (User Actions)
+│   ├── models/                   # Page models
+│   │   └── user.model.ts
+│   ├── pages/                   # Page objects
+│   └── locators.ts              # Centralized locators
+│
+├── validators/                   # Validators (Shared)
+│   ├── user.validator.ts
+│   └── order.validator.ts
+│
+├── core/                         # Core Utilities
+│   ├── config.ts                # Config & env handling
+│   ├── logger.ts                # Logging (Pino)
+│   ├── retries.ts               # Retry logic
+│   └── test-context.ts          # Test context
+│
+├── tests/                        # Test Scenarios (Business Flow)
+│   ├── login.flow.spec.ts
+│   ├── checkout.flow.spec.ts
+│   └── user.lifecycle.spec.ts
+│
+├── fixtures/                     # Test Fixtures
+│   ├── browser.fixture.ts       # Browser context per test
+│   ├── test.context.ts          # Cleanup hooks
+│   └── auth.setup.ts            # API auth/session setup
+│
+├── env/                          # Environment configs
+│   ├── .env.dev
+│   ├── .env.qa
+│   └── .env.prod
+│
+└── playwright.config.ts          # Playwright configuration
 ```
 
-If `ENV` is not provided, the framework **defaults to `qa`**.
+## Getting Started
 
-------------------------------------------------------------------------
-
-## Running Tests
-
-### Run all tests
-
-``` bash
-npx playwright test
+```bash
+npm install
+npx playwright install
+ENV=qa npm test
 ```
 
-### Run tests in a specific environment
+## Writing Tests
 
-``` bash
-ENV=staging npx playwright test
+Tests use **intent only** - no implementation details:
+
+```typescript
+test('user lifecycle', async ({ page, request }) => {
+  const userClient = new UserClient(request);
+  const user = await userClient.createUser(testData);
+  
+  const userPage = new UserPage(page);
+  await userPage.navigateToProfile();
+  await userPage.verifyUserDetails(user);
+});
 ```
-
-### Run a specific project
-
-``` bash
-npx playwright test --project="client chromium"
-```
-
-### Run a single test file
-
-``` bash
-npx playwright test tests/client/example.client.spec.ts
-```
-
-### Run in headed mode
-
-``` bash
-npx playwright test --headed
-```
-
-------------------------------------------------------------------------
-
-## Authentication Strategy
-
-Authentication is handled once and reused across all UI tests using
-`storageState`.
-
-------------------------------------------------------------------------
-
-## Reports & Debugging
-
--   HTML report for local runs
--   JUnit report for CI
--   Screenshots, videos, and traces captured on failure
-
-------------------------------------------------------------------------
-
-## Commenting Standards
-
-### File-Level Doc Comment (Required)
-
-``` ts
-/**
- * Feature: Client Quote Flow
- * Purpose: Validate end-to-end quote creation for logged-in users
- * Author: QA Automation Team
- */
-```
-
-------------------------------------------------------------------------
-
-## Best Practices
-
--   Keep tests independent
--   Prefer API setup
--   Avoid hard waits
--   Write clear test names
-
-------------------------------------------------------------------------
-
-## Getting Started Checklist
-
--   [ ] Install dependencies
--   [ ] Verify environment file
--   [ ] Run setup tests
--   [ ] Execute UI tests
