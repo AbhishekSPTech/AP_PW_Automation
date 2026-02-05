@@ -1,3 +1,48 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Test results
+test-results/
+playwright-report/
+allure-results/
+allure-report/
+screenshots/
+
+# Auth state
+fixtures/auth/*.json
+
+# Environment variables (keep templates, ignore actual credentials)
+.env
+.env.local
+# Do keep the template files:
+# !env/.env.dev
+# !env/.env.qa
+# !env/.env.prod
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+logs/
+
+# Debug
+debug.log
+
 # Logs
 logs
 *.log
