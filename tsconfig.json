@@ -11,16 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": ["node", "@playwright/test"],
-    "baseUrl": ".",
-    "paths": {
-      "@api/*": ["api/*"],
-      "@ui/*": ["ui/*"],
-      "@validators/*": ["validators/*"],
-      "@core/*": ["core/*"],
-      "@fixtures/*": ["fixtures/*"],
-      "@tests/*": ["tests/*"]
-    }
+    "types": ["node", "@playwright/test"]
   },
   "include": [
     "**/*.ts"
