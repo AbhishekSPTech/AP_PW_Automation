@@ -7,6 +7,7 @@
 
 import { test as base } from '@playwright/test';
 import { createLogger } from '../core/logger';
+import { config } from '../core/config';
 
 const logger = createLogger('BrowserFixture');
 
@@ -43,7 +44,7 @@ export const test = base.extend({
     const page = await context.newPage();
 
     // Set default timeout
-    page.setDefaultTimeout(30000);
+    page.setDefaultTimeout(config.getTimeout('action'));
 
     await use(page);
 

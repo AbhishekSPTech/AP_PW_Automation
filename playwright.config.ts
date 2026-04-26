@@ -72,6 +72,7 @@ export default defineConfig({
     // =============================================================================
     {
       name: 'auth setup',
+      testDir: './fixtures',
       testMatch: /auth\.setup\.ts$/,
       use: {
         ...devices['Desktop Chrome'],

@@ -11,6 +11,7 @@ import { AuthClient } from '../api/clients/auth.client';
 import { UserBuilder } from '../api/models/user.model';
 import { UserValidator } from '../validators/user.validator';
 import { config } from '../core/config';
+import { TEST_PASSWORD, STATIC_TEST_USERS } from '../fixtures/test-data';
 
 test.describe('User API Tests', () => {
   let userClient: UserClient;
@@ -51,7 +52,7 @@ test.describe('User API Tests', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     createdUserIds.push(createdUser.id);
@@ -72,7 +73,7 @@ test.describe('User API Tests', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     createdUserIds.push(createdUser.id);
@@ -94,7 +95,7 @@ test.describe('User API Tests', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     createdUserIds.push(createdUser.id);
@@ -119,7 +120,7 @@ test.describe('User API Tests', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     // Act
@@ -138,15 +139,13 @@ test.describe('User API Tests', () => {
   test('should get all users', async () => {
     // Arrange - Create multiple users
     const user1 = await userClient.createUser({
-      email: 'user1@example.com',
-      name: 'User One',
-      password: 'Test@123',
+      ...STATIC_TEST_USERS.user1,
+      password: TEST_PASSWORD,
     });
 
     const user2 = await userClient.createUser({
-      email: 'user2@example.com',
-      name: 'User Two',
-      password: 'Test@123',
+      ...STATIC_TEST_USERS.user2,
+      password: TEST_PASSWORD,
     });
 
     createdUserIds.push(user1.id, user2.id);
@@ -173,7 +172,7 @@ test.describe('User API Tests', () => {
       await userClient.createUser({
         email: userData.email,
         name: userData.name,
-        password: 'Test@123',
+        password: TEST_PASSWORD,
       });
       throw new Error('Should have failed with invalid email');
     } catch (error) {

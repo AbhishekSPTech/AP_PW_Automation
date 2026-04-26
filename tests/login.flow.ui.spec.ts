@@ -8,8 +8,14 @@
 import { test, expect } from '@playwright/test';
 import { UserPage } from '../ui/models/user.model';
 import { config } from '../core/config';
+import { INVALID_CREDENTIALS } from '../fixtures/test-data';
 
 test.describe('Login Flow', () => {
+  // Override the project-level storageState so these tests start unauthenticated.
+  // Without this, the pre-loaded session cookies redirect away from the login page
+  // before the test can interact with the login form.
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   let userPage: UserPage;
 
   test.beforeEach(async ({ page }) => {
@@ -22,7 +28,7 @@ test.describe('Login Flow', () => {
 
     // Act
     await userPage.navigateToLogin();
-    await userPage.login(credentials.email, credentials.password);
+    await userPage.login(credentials.Username, credentials.password);
 
     // Assert - Validates via UI
     await userPage.verifyLoggedIn();
@@ -31,7 +37,7 @@ test.describe('Login Flow', () => {
   test('should show error for invalid credentials', async () => {
     // Act
     await userPage.navigateToLogin();
-    await userPage.login('invalid@example.com', 'wrongpassword');
+    await userPage.login(INVALID_CREDENTIALS.Username, INVALID_CREDENTIALS.password);
 
     // Assert - Validates via UI
     await userPage.verifyErrorMessage('Invalid email or password');
@@ -43,7 +49,7 @@ test.describe('Login Flow', () => {
 
     // Act
     await userPage.navigateToLogin();
-    await userPage.login(credentials.email, credentials.password);
+    await userPage.login(credentials.Username, credentials.password);
     await userPage.navigateToProfile();
 
     // Assert - Validates via UI
