@@ -6,8 +6,8 @@
  */
 
 import { Page, Locator } from '@playwright/test';
-import { createLogger } from '../../core/logger';
-import { config } from '../../core/config';
+import { createLogger } from '../core/logger';
+import { config } from '../core/config';
 
 const logger = createLogger('BasePage');
 
