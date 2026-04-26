@@ -18,7 +18,7 @@ test.describe('Login Flow', () => {
 
   test('should login successfully with valid credentials', async () => {
     // Arrange
-    const credentials = config.getCredentials('clientUser');
+    const credentials = config.getCredentials('adminUser');
 
     // Act
     await userPage.navigateToLogin();
