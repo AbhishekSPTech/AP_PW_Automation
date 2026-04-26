@@ -15,10 +15,11 @@ const logger = createLogger('UserPage');
 export class UserPage extends BasePage {
   // Locators
   private readonly emailInput = this.page.locator('#email');
-  private readonly passwordInput = this.page.locator('#password');
+  private readonly UsernameInput = this.page.getByRole('textbox', { name: 'Username' });
+  private readonly passwordInput = this.page.getByRole('textbox', { name: 'Password' });
   private readonly nameInput = this.page.locator('#name');
   private readonly loginButton = this.page.locator('button[type="submit"]');
-  private readonly profileLink = this.page.locator('a[href="/profile"]');
+  private readonly profileLink = this.page.getByRole('banner').getByRole('img', { name: 'profile picture' });
   private readonly userNameDisplay = this.page.locator('[data-testid="user-name"]');
   private readonly userEmailDisplay = this.page.locator('[data-testid="user-email"]');
   private readonly userRoleDisplay = this.page.locator('[data-testid="user-role"]');
@@ -36,17 +37,17 @@ export class UserPage extends BasePage {
    */
   async navigateToLogin(): Promise<void> {
     logger.logStep('Navigate to login page');
-    await this.goto('/login');
+    await this.goto('/web/index.php/auth/login');
     await this.waitForPageLoad();
   }
 
   /**
    * Login with credentials
    */
-  async login(email: string, password: string): Promise<void> {
-    logger.logStep('Login user', { email });
-    
-    await this.fill(this.emailInput, email);
+  async login(Username: string, password: string): Promise<void> {
+    logger.logStep('Login user', { Username });
+
+    await this.fill(this.UsernameInput, Username);
     await this.fill(this.passwordInput, password);
     await this.click(this.loginButton);
     await this.waitForPageLoad();
@@ -74,7 +75,7 @@ export class UserPage extends BasePage {
    */
   async verifyUserDetails(user: UserModel): Promise<void> {
     logger.logStep('Verify user details', { userId: user.id });
-    
+
     // Validate via UI only
     await expect(this.userNameDisplay).toHaveText(user.name);
     await expect(this.userEmailDisplay).toHaveText(user.email);
@@ -86,7 +87,7 @@ export class UserPage extends BasePage {
    */
   async updateUserName(newName: string): Promise<void> {
     logger.logStep('Update user name', { newName });
-    
+
     await this.click(this.editProfileButton);
     await this.fill(this.nameInput, newName);
     await this.click(this.saveButton);

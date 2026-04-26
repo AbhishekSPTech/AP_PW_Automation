@@ -10,6 +10,7 @@ import { UserClient } from '../api/clients/user.client';
 import { UserPage } from '../ui/models/user.model';
 import { UserBuilder } from '../api/models/user.model';
 import { UserValidator } from '../validators/user.validator';
+import { TEST_PASSWORD, WEAK_PASSWORD, STRONG_PASSWORD } from '../fixtures/test-data';
 
 test.describe('User Lifecycle', () => {
   let userClient: UserClient;
@@ -40,7 +41,7 @@ test.describe('User Lifecycle', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     testUserId = createdUser.id;
@@ -61,7 +62,7 @@ test.describe('User Lifecycle', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     testUserId = createdUser.id;
@@ -89,7 +90,7 @@ test.describe('User Lifecycle', () => {
     const createdUser = await userClient.createUser({
       email: userData.email,
       name: userData.name,
-      password: 'Test@123',
+      password: TEST_PASSWORD,
     });
 
     testUserId = createdUser.id;
@@ -121,8 +122,8 @@ test.describe('User Lifecycle', () => {
 
   test('should validate password strength', async () => {
     // Arrange
-    const weakPassword = 'weak';
-    const strongPassword = 'Strong@123';
+    const weakPassword = WEAK_PASSWORD;
+    const strongPassword = STRONG_PASSWORD;
 
     // Act
     const weakResult = UserValidator.validatePassword(weakPassword);

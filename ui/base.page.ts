@@ -146,7 +146,7 @@ export class BasePage {
    * Take screenshot
    */
   async screenshot(name: string): Promise<void> {
-    await this.page.screenshot({ path: `screenshots/${name}.png` });
+    await this.page.screenshot({ path: `${config.getScreenshotsDir()}/${name}.png` });
     logger.info(`Screenshot saved: ${name}.png`);
   }
 
