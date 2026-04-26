@@ -15,10 +15,10 @@ const authFile = path.resolve(__dirname, 'auth/client.user.json');
  * Setup authentication for client user
  * This runs once before all tests
  */
-setup('authenticate client user', async ({ page, request }) => {
-  console.log('Setting up authentication for client user...');
+setup('authenticate admin user', async ({ page, request }) => {
+  console.log('Setting up authentication for admin user...');
 
-  const credentials = config.getCredentials('clientUser');
+  const credentials = config.getCredentials('adminUser');
 
   // Navigate to login page
   await page.goto(`${config.getBaseURL()}/login`);

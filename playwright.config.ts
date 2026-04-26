@@ -33,30 +33,30 @@ export default defineConfig({
   // Reporter configuration
   reporter: process.env.CI
     ? [
-        ['junit', { outputFile: 'test-results/junit-results.xml' }],
-        ['html', { open: 'never' }],
-      ]
+      ['junit', { outputFile: 'test-results/junit-results.xml' }],
+      ['html', { open: 'never' }],
+    ]
     : [
-        ['html', { open: 'never' }],
-        ['list'],
-      ],
+      ['html', { open: 'never' }],
+      ['list'],
+    ],
 
   // Shared settings for all projects
   use: {
     baseURL: process.env.BASE_URL,
-    
+
     // Capture trace on first retry
     trace: 'on-first-retry',
-    
+
     // Record video on failure
     video: 'retain-on-failure',
-    
+
     // Screenshot on failure
     screenshot: 'only-on-failure',
-    
+
     // Action timeout
     actionTimeout: 30_000,
-    
+
     // Navigation timeout
     navigationTimeout: 60_000,
 
@@ -88,7 +88,7 @@ export default defineConfig({
         storageState: 'fixtures/auth/client.user.json',
       },
       dependencies: ['auth setup'],
-      testMatch: /.*\.client\.spec\.ts$/,
+      testMatch: /.*\.ui\.spec\.ts$/,
     },
     {
       name: 'client firefox',
@@ -97,7 +97,7 @@ export default defineConfig({
         storageState: 'fixtures/auth/client.user.json',
       },
       dependencies: ['auth setup'],
-      testMatch: /.*\.client\.spec\.ts$/,
+      testMatch: /.*\.ui\.spec\.ts$/,
     },
     {
       name: 'client webkit',
@@ -106,7 +106,7 @@ export default defineConfig({
         storageState: 'fixtures/auth/client.user.json',
       },
       dependencies: ['auth setup'],
-      testMatch: /.*\.client\.spec\.ts$/,
+      testMatch: /.*\.ui\.spec\.ts$/,
     },
 
     // =============================================================================
