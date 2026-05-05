@@ -1,9 +1,7 @@
-/**
- * User Lifecycle Test
- * Tests complete user lifecycle (create, verify, update, delete)
- * 
- * Business Flow - Data via API, Validation via UI
- */
+//User Lifecycle Test
+//Tests complete user lifecycle(create, verify, update, delete)
+
+//Business Flow - Data via API, Validation via UI
 
 import { test, expect } from '@playwright/test';
 import { UserClient } from '../api/clients/user.client';
@@ -51,7 +49,7 @@ test.describe('User Lifecycle', () => {
 
     // Act - Verify via UI
     await userPage.navigateToProfile();
-    
+
     // Assert - Validates via UI only
     await userPage.verifyUserDetails(createdUser);
   });

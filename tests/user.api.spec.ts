@@ -1,9 +1,7 @@
-/**
- * User API Test
- * Tests user API endpoints
- * 
- * Business Flow - API Only (No Browser)
- */
+//User API Test
+//Tests user API endpoints
+
+//Business Flow - API Only(No Browser)
 
 import { test, expect } from '@playwright/test';
 import { UserClient } from '../api/clients/user.client';
@@ -23,7 +21,7 @@ test.describe('User API Tests', () => {
     // Authenticate to get token
     authClient = new AuthClient(request);
     const credentials = config.getCredentials('clientUser');
-    
+
     const authResponse = await authClient.login(credentials);
     authToken = authResponse.token;
   });
@@ -62,7 +60,7 @@ test.describe('User API Tests', () => {
     expect(createdUser.id).toBeTruthy();
     expect(createdUser.email).toBe(userData.email);
     expect(createdUser.name).toBe(userData.name);
-    
+
     // Validate using validator
     UserValidator.validate(createdUser);
   });
@@ -85,7 +83,7 @@ test.describe('User API Tests', () => {
     expect(retrievedUser.id).toBe(createdUser.id);
     expect(retrievedUser.email).toBe(createdUser.email);
     expect(retrievedUser.name).toBe(createdUser.name);
-    
+
     UserValidator.validate(retrievedUser);
   });
 
@@ -110,7 +108,7 @@ test.describe('User API Tests', () => {
     expect(updatedUser.id).toBe(createdUser.id);
     expect(updatedUser.name).toBe(updatedName);
     expect(updatedUser.email).toBe(createdUser.email);
-    
+
     UserValidator.validate(updatedUser);
   });
 

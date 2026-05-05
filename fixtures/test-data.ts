@@ -1,7 +1,5 @@
-/**
- * Shared test data constants
- * All hardcoded test values live here — import from this file in tests
- */
+//Shared test data constants
+//All hardcoded test values live here — import from this file in tests
 
 export const TEST_PASSWORD = 'Test@123';
 

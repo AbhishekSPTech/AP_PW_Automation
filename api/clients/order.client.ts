@@ -1,9 +1,7 @@
-/**
- * Order API Client
- * Handles order operations
- * 
- * API Layer - Data Control
- */
+// Order API Client
+// Handles order operations
+
+// API Layer - Data Control
 
 import { APIRequestContext } from '@playwright/test';
 import { BaseAPIClient } from '../base.client';
@@ -64,9 +62,7 @@ export class OrderClient extends BaseAPIClient {
       : {};
   }
 
-  /**
-   * Create order
-   */
+  // Create order
   async createOrder(orderData: CreateOrderRequest): Promise<OrderModel> {
     logger.info('Creating order', { userId: orderData.userId });
 
@@ -83,9 +79,7 @@ export class OrderClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Get order by ID
-   */
+  // Get order by ID  
   async getOrderById(orderId: string): Promise<OrderModel> {
     logger.info('Fetching order', { orderId });
 
@@ -98,9 +92,7 @@ export class OrderClient extends BaseAPIClient {
     return await this.parseJSON<OrderModel>(response);
   }
 
-  /**
-   * Get orders by user ID
-   */
+  // Get orders by user ID
   async getOrdersByUserId(userId: string): Promise<OrderModel[]> {
     logger.info('Fetching orders for user', { userId });
 
@@ -114,9 +106,7 @@ export class OrderClient extends BaseAPIClient {
     return await this.parseJSON<OrderModel[]>(response);
   }
 
-  /**
-   * Update order status
-   */
+  //  Update order status
   async updateOrderStatus(
     orderId: string,
     status: OrderModel['status']
@@ -135,9 +125,7 @@ export class OrderClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Cancel order
-   */
+  // Cancel order
   async cancelOrder(orderId: string): Promise<OrderModel> {
     logger.info('Cancelling order', { orderId });
 
@@ -152,9 +140,7 @@ export class OrderClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Delete order
-   */
+  // Delete order
   async deleteOrder(orderId: string): Promise<void> {
     logger.info('Deleting order', { orderId });
 

@@ -1,9 +1,7 @@
-/**
- * Browser Fixture
- * Provides isolated browser context per test
- * 
- * Test Fixtures - Enforces Isolation
- */
+//Browser Fixture
+//Provides isolated browser context per test
+
+//Test Fixtures - Enforces Isolation
 
 import { test as base } from '@playwright/test';
 import { createLogger } from '../core/logger';
@@ -11,16 +9,14 @@ import { config } from '../core/config';
 
 const logger = createLogger('BrowserFixture');
 
-/**
- * Extended test with custom fixtures
- */
+//Extended test with custom fixtures
 export const test = base.extend({
-  /**
-   * Browser context with isolation
-   */
+
+  //Browser context with isolation
+
   context: async ({ browser }, use) => {
     logger.info('Creating isolated browser context');
-    
+
     const context = await browser.newContext({
       viewport: { width: 1920, height: 1080 },
       permissions: ['clipboard-read', 'clipboard-write'],
@@ -35,12 +31,10 @@ export const test = base.extend({
     await context.close();
   },
 
-  /**
-   * Page with automatic cleanup
-   */
+  //Page with automatic cleanup
   page: async ({ context }, use) => {
     logger.info('Creating new page');
-    
+
     const page = await context.newPage();
 
     // Set default timeout
