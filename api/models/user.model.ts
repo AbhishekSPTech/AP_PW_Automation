@@ -1,9 +1,8 @@
-/**
- * User Data Model
- * Represents user entity structure
- * 
- * API Layer - Data Models
- */
+//User Data Model
+//Represents user entity structure
+
+//API Layer - Data Models
+
 
 export interface UserModel {
   id: string;
@@ -15,9 +14,7 @@ export interface UserModel {
   updatedAt: string;
 }
 
-/**
- * User builder for test data
- */
+//User builder for test data
 export class UserBuilder {
   private user: Partial<UserModel> = {};
 
@@ -58,9 +55,7 @@ export class UserBuilder {
     };
   }
 
-  /**
-   * Create random test user
-   */
+  //Create random test user
   static createRandomUser(): UserModel {
     const timestamp = Date.now();
     return new UserBuilder()

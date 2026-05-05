@@ -1,7 +1,5 @@
-/**
- * Main Export Index
- * Central export point for the framework
- */
+// Main Export Index
+// Central export point for the framework
 
 // API Layer
 export { BaseAPIClient } from './api/base.client';
@@ -12,7 +10,15 @@ export { UserModel, UserBuilder } from './api/models/user.model';
 
 // UI Layer
 export { BasePage } from './ui/base.page';
+export { Locators } from './ui/locators';
+
+// UI Page Models (backwards compatible)
 export { UserPage } from './ui/models/user.model';
+
+// UI Pages (focused, use these in new tests)
+export { LoginPage } from './ui/pages/login.page';
+export { DashboardPage } from './ui/pages/dashboard.page';
+export { ProfilePage } from './ui/pages/profile.page';
 
 // Validators
 export { UserValidator } from './validators/user.validator';

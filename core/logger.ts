@@ -1,9 +1,7 @@
-/**
- * Logger Utility (Pino)
- * Provides structured logging for the framework
- * 
- * Framework-only - Not accessible from tests
- */
+//Logger Utility (Pino)
+//Provides structured logging for the framework
+
+//Framework - only - Not accessible from tests
 
 import pino from 'pino';
 import { config } from './config';
@@ -20,9 +18,7 @@ const logger = pino({
   },
 });
 
-/**
- * Structured logger for the framework
- */
+//Structured logger for the framework
 export class Logger {
   private context: string;
 
@@ -46,31 +42,23 @@ export class Logger {
     logger.debug({ context: this.context, ...data }, message);
   }
 
-  /**
-   * Log API request
-   */
+  //Log API request
   logRequest(method: string, url: string, data?: any) {
     this.info(`API Request: ${method} ${url}`, { data });
   }
 
-  /**
-   * Log API response
-   */
+  //Log API response
   logResponse(status: number, url: string, data?: any) {
     this.info(`API Response: ${status} ${url}`, { data });
   }
 
-  /**
-   * Log test step
-   */
+  //Log test step
   logStep(step: string, data?: any) {
     this.info(`Test Step: ${step}`, data);
   }
 }
 
-/**
- * Create logger instance with context
- */
+//Create logger instance with context
 export const createLogger = (context: string): Logger => {
   return new Logger(context);
 };

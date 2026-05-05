@@ -1,9 +1,7 @@
-/**
- * Test Context Fixture
- * Provides test context with cleanup hooks
- * 
- * Test Fixtures - Cleanup Hooks
- */
+//Test Context Fixture
+//Provides test context with cleanup hooks
+
+//Test Fixtures - Cleanup Hooks
 
 import { test as base } from '@playwright/test';
 import { createLogger } from '../core/logger';
@@ -16,11 +14,9 @@ export interface TestData {
   testStartTime: number;
 }
 
-/**
- * Extended test with test data tracking
- */
+//Extended test with test data tracking
 export const test = base.extend<{ testData: TestData }>({
-  testData: async ({}, use, testInfo) => {
+  testData: async ({ }, use, testInfo) => {
     const testData: TestData = {
       createdUsers: [],
       createdOrders: [],
