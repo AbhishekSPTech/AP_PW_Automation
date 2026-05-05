@@ -1,9 +1,8 @@
-/**
- * Base API Client
- * Provides common functionality for all API clients
- * 
- * API Layer - Data Control
- */
+//Base API Client
+//Provides common functionality for all API clients
+
+//API Layer - Data Control
+
 
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import { createLogger } from '../core/logger';
@@ -28,9 +27,9 @@ export class BaseAPIClient {
     this.baseURL = config.getAPIURL();
   }
 
-  /**
-   * GET request
-   */
+
+  //GET request
+
   protected async get(
     endpoint: string,
     options: RequestOptions = {}
@@ -53,9 +52,9 @@ export class BaseAPIClient {
     return response;
   }
 
-  /**
-   * POST request
-   */
+
+  //POST request
+
   protected async post(
     endpoint: string,
     options: RequestOptions = {}
@@ -78,9 +77,9 @@ export class BaseAPIClient {
     return response;
   }
 
-  /**
-   * PUT request
-   */
+
+  //PUT request
+
   protected async put(
     endpoint: string,
     options: RequestOptions = {}
@@ -103,9 +102,9 @@ export class BaseAPIClient {
     return response;
   }
 
-  /**
-   * PATCH request
-   */
+
+  //PATCH request
+
   protected async patch(
     endpoint: string,
     options: RequestOptions = {}
@@ -122,9 +121,9 @@ export class BaseAPIClient {
     return response;
   }
 
-  /**
-   * DELETE request
-   */
+
+  //DELETE request
+
   protected async delete(
     endpoint: string,
     options: RequestOptions = {}
@@ -140,9 +139,9 @@ export class BaseAPIClient {
     return response;
   }
 
-  /**
-   * Verify response status
-   */
+
+  //Verify response status
+
   protected verifyStatus(response: APIResponse, expectedStatus: number): void {
     if (response.status() !== expectedStatus) {
       throw new Error(
@@ -151,9 +150,9 @@ export class BaseAPIClient {
     }
   }
 
-  /**
-   * Parse JSON response
-   */
+
+  //Parse JSON response
+
   protected async parseJSON<T>(response: APIResponse): Promise<T> {
     return await response.json();
   }

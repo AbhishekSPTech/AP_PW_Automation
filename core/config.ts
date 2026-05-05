@@ -1,14 +1,13 @@
-/**
- * Core Configuration Utility
- * Handles environment variables and configuration management
- * 
- * Framework-only - Not accessible from tests
- */
+//Core Configuration Utility
+//Handles environment variables and configuration management
 
-interface Config {
+//Framework - only - Not accessible from tests
+
+  interface Config {
   baseURL: string;
   apiURL: string;
   env: string;
+  screenshotsDir: string;
   timeout: {
     action: number;
     navigation: number;
@@ -21,13 +20,23 @@ interface Config {
   credentials: {
     clientUser: {
       email: string;
+      Username: string;
       password: string;
     };
     adminUser: {
       email: string;
+      Username: string;
       password: string;
     };
   };
+}
+
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Required environment variable "${name}" is not set. Ensure your env file is loaded correctly.`);
+  }
+  return value;
 }
 
 class ConfigManager {
@@ -49,9 +58,10 @@ class ConfigManager {
     const env = process.env.ENV || 'qa';
 
     return {
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      apiURL: process.env.API_URL || 'http://localhost:3000/api',
+      baseURL: requireEnv('BASE_URL'),
+      apiURL: requireEnv('API_URL'),
       env,
+      screenshotsDir: process.env.SCREENSHOTS_DIR || 'screenshots',
       timeout: {
         action: parseInt(process.env.ACTION_TIMEOUT || '30000', 10),
         navigation: parseInt(process.env.NAVIGATION_TIMEOUT || '60000', 10),
@@ -63,12 +73,14 @@ class ConfigManager {
       },
       credentials: {
         clientUser: {
-          email: process.env.CLIENT_USER_EMAIL || 'client@example.com',
-          password: process.env.CLIENT_USER_PASSWORD || 'password123',
+          email: requireEnv('CLIENT_USER_EMAIL'),
+          Username: requireEnv('CLIENT_USER_USERNAME'),
+          password: requireEnv('CLIENT_USER_PASSWORD'),
         },
         adminUser: {
-          email: process.env.ADMIN_USER_EMAIL || 'admin@example.com',
-          password: process.env.ADMIN_USER_PASSWORD || 'admin123',
+          email: requireEnv('ADMIN_USER_EMAIL'),
+          Username: requireEnv('ADMIN_USER_USERNAME'),
+          password: requireEnv('ADMIN_USER_PASSWORD'),
         },
       },
     };
@@ -88,6 +100,10 @@ class ConfigManager {
 
   public getEnv(): string {
     return this.config.env;
+  }
+
+  public getScreenshotsDir(): string {
+    return this.config.screenshotsDir;
   }
 
   public getTimeout(type: 'action' | 'navigation' | 'test'): number {

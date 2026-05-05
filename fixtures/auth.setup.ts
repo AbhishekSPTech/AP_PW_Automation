@@ -1,9 +1,8 @@
-/**
- * Auth Setup Fixture
- * Handles authentication setup before tests
- * 
- * Test Fixtures - Isolated Execution
- */
+//Auth Setup Fixture
+//Handles authentication setup before tests
+
+//Test Fixtures - Isolated Execution
+
 
 import { test as setup, expect } from '@playwright/test';
 import { config } from '../core/config';
@@ -11,30 +10,28 @@ import path from 'path';
 
 const authFile = path.resolve(__dirname, 'auth/client.user.json');
 
-/**
- * Setup authentication for client user
- * This runs once before all tests
- */
+//Setup authentication for client user
+//This runs once before all tests
 setup('authenticate admin user', async ({ page, request }) => {
   console.log('Setting up authentication for admin user...');
 
   const credentials = config.getCredentials('adminUser');
 
   // Navigate to login page
-  await page.goto(`${config.getBaseURL()}/login`);
+  await page.goto(`${config.getBaseURL()}/web/index.php/auth/login`);
 
   // Fill in credentials
-  await page.locator('#email').fill(credentials.email);
-  await page.locator('#password').fill(credentials.password);
+  await page.getByRole('textbox', { name: 'Username' }).fill(credentials.Username);
+  await page.getByRole('textbox', { name: 'Password' }).fill(credentials.password);
 
   // Click login button
-  await page.locator('button[type="submit"]').click();
+  await page.getByRole('button', { name: 'Login' }).click();
 
   // Wait for successful login (adjust selector based on your app)
-  await page.waitForURL('**/dashboard', { timeout: 30000 });
+  await page.waitForURL('**/dashboard/index', { timeout: config.getTimeout('action') });
 
   // Verify login was successful
-  await expect(page.locator('text=Welcome')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
 
   // Save authenticated state
   await page.context().storageState({ path: authFile });

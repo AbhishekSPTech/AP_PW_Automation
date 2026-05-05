@@ -1,9 +1,7 @@
-/**
- * Auth API Client
- * Handles authentication operations
- * 
- * API Layer - Data Control
- */
+// Auth API Client
+// Handles authentication operations
+
+// API Layer - Data Control
 
 import { APIRequestContext } from '@playwright/test';
 import { BaseAPIClient } from '../base.client';
@@ -32,9 +30,7 @@ export class AuthClient extends BaseAPIClient {
     super(request);
   }
 
-  /**
-   * Login user
-   */
+  // Login user
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     logger.info('Logging in user', { email: credentials.email });
 
@@ -50,9 +46,7 @@ export class AuthClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Logout user
-   */
+  // Logout user
   async logout(token: string): Promise<void> {
     logger.info('Logging out user');
 
@@ -66,9 +60,7 @@ export class AuthClient extends BaseAPIClient {
     logger.info('Logout successful');
   }
 
-  /**
-   * Refresh token
-   */
+  // Refresh token
   async refreshToken(refreshToken: string): Promise<AuthResponse> {
     logger.info('Refreshing token');
 
@@ -80,9 +72,7 @@ export class AuthClient extends BaseAPIClient {
     return await this.parseJSON<AuthResponse>(response);
   }
 
-  /**
-   * Verify token
-   */
+  // Verify token
   async verifyToken(token: string): Promise<boolean> {
     try {
       const response = await this.get('/auth/verify', {
