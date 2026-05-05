@@ -1,9 +1,6 @@
-/**
- * User Validator
- * Validates user data (shared between API and UI layers)
- * 
- * Shared Infrastructure - Validators
- */
+//User Validator
+//Validates user data(shared between API and UI layers)
+//Shared Infrastructure - Validators
 
 import { z } from 'zod';
 import { UserModel } from '../api/models/user.model';
@@ -11,9 +8,7 @@ import { createLogger } from '../core/logger';
 
 const logger = createLogger('UserValidator');
 
-/**
- * User schema validation using Zod
- */
+//User schema validation using Zod
 const userSchema = z.object({
   id: z.string().min(1, 'User ID is required'),
   email: z.string().email('Invalid email format'),
@@ -25,9 +20,8 @@ const userSchema = z.object({
 });
 
 export class UserValidator {
-  /**
-   * Validate user object
-   */
+
+  //Validate user object
   static validate(user: UserModel): boolean {
     try {
       userSchema.parse(user);
@@ -39,23 +33,19 @@ export class UserValidator {
     }
   }
 
-  /**
-   * Validate email format
-   */
+  //Validate email format
   static validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailRegex.test(email);
-    
+
     if (!isValid) {
       logger.warn('Invalid email format', { email });
     }
-    
+
     return isValid;
   }
 
-  /**
-   * Validate password strength
-   */
+  //Validate password strength
   static validatePassword(password: string): {
     isValid: boolean;
     errors: string[];
@@ -91,36 +81,30 @@ export class UserValidator {
     return { isValid, errors };
   }
 
-  /**
-   * Validate user name
-   */
+  //Validate user name
   static validateName(name: string): boolean {
     const isValid = name.length >= 2 && name.length <= 50;
-    
+
     if (!isValid) {
       logger.warn('Invalid name', { name });
     }
-    
+
     return isValid;
   }
 
-  /**
-   * Validate user role
-   */
+  //Validate user role
   static validateRole(role: string): boolean {
     const validRoles = ['user', 'admin', 'client'];
     const isValid = validRoles.includes(role);
-    
+
     if (!isValid) {
       logger.warn('Invalid role', { role });
     }
-    
+
     return isValid;
   }
 
-  /**
-   * Validate partial user update
-   */
+  //Validate partial user update
   static validatePartialUpdate(updates: Partial<UserModel>): boolean {
     try {
       if (updates.email && !this.validateEmail(updates.email)) {

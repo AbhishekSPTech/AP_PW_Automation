@@ -1,9 +1,8 @@
-/**
- * Auth Setup Fixture
- * Handles authentication setup before tests
- * 
- * Test Fixtures - Isolated Execution
- */
+//Auth Setup Fixture
+//Handles authentication setup before tests
+
+//Test Fixtures - Isolated Execution
+
 
 import { test as setup, expect } from '@playwright/test';
 import { config } from '../core/config';
@@ -11,10 +10,8 @@ import path from 'path';
 
 const authFile = path.resolve(__dirname, 'auth/client.user.json');
 
-/**
- * Setup authentication for client user
- * This runs once before all tests
- */
+//Setup authentication for client user
+//This runs once before all tests
 setup('authenticate admin user', async ({ page, request }) => {
   console.log('Setting up authentication for admin user...');
 

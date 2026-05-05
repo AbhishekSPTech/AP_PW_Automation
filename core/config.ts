@@ -1,11 +1,9 @@
-/**
- * Core Configuration Utility
- * Handles environment variables and configuration management
- *
- * Framework-only - Not accessible from tests
- */
+//Core Configuration Utility
+//Handles environment variables and configuration management
 
-interface Config {
+//Framework - only - Not accessible from tests
+
+  interface Config {
   baseURL: string;
   apiURL: string;
   env: string;

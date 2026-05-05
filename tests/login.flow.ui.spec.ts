@@ -1,9 +1,7 @@
-/**
- * Login Flow Test
- * Tests user authentication flow
- * 
- * Business Flow - Uses Only Intent
- */
+//Login Flow Test
+//Tests user authentication flow
+
+//Business Flow - Uses Only Intent
 
 import { test, expect } from '@playwright/test';
 import { UserPage } from '../ui/models/user.model';

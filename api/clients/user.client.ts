@@ -1,9 +1,7 @@
-/**
- * User API Client
- * Handles user CRUD operations
- * 
- * API Layer - Data Control
- */
+//User API Client
+//Handles user CRUD operations
+
+//API Layer - Data Control
 
 import { APIRequestContext } from '@playwright/test';
 import { BaseAPIClient } from '../base.client';
@@ -33,25 +31,20 @@ export class UserClient extends BaseAPIClient {
     this.authToken = authToken;
   }
 
-  /**
-   * Set auth token
-   */
+
+  //Set auth token
   setAuthToken(token: string): void {
     this.authToken = token;
   }
 
-  /**
-   * Get auth headers
-   */
+  //Get auth headers
   private getAuthHeaders(): Record<string, string> {
     return this.authToken
       ? { Authorization: `Bearer ${this.authToken}` }
       : {};
   }
 
-  /**
-   * Create user
-   */
+  //Create user
   async createUser(userData: CreateUserRequest): Promise<UserModel> {
     logger.info('Creating user', { email: userData.email });
 
@@ -68,9 +61,7 @@ export class UserClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Get user by ID
-   */
+  //Get user by ID
   async getUserById(userId: string): Promise<UserModel> {
     logger.info('Fetching user', { userId });
 
@@ -83,9 +74,7 @@ export class UserClient extends BaseAPIClient {
     return await this.parseJSON<UserModel>(response);
   }
 
-  /**
-   * Get user by email
-   */
+  //Get user by email
   async getUserByEmail(email: string): Promise<UserModel> {
     logger.info('Fetching user by email', { email });
 
@@ -105,9 +94,7 @@ export class UserClient extends BaseAPIClient {
     return users[0];
   }
 
-  /**
-   * Update user
-   */
+  //Update user
   async updateUser(
     userId: string,
     userData: UpdateUserRequest
@@ -126,9 +113,7 @@ export class UserClient extends BaseAPIClient {
     return data;
   }
 
-  /**
-   * Delete user
-   */
+  //Delete user
   async deleteUser(userId: string): Promise<void> {
     logger.info('Deleting user', { userId });
 
@@ -140,9 +125,7 @@ export class UserClient extends BaseAPIClient {
     logger.info('User deleted successfully', { userId });
   }
 
-  /**
-   * Get all users
-   */
+  //Get all users
   async getAllUsers(): Promise<UserModel[]> {
     logger.info('Fetching all users');
 

@@ -1,9 +1,8 @@
-/**
- * Order Validator
- * Validates order data (shared between API and UI layers)
- * 
- * Shared Infrastructure - Validators
- */
+//Order Validator
+//Validates order data(shared between API and UI layers)
+
+//Shared Infrastructure - Validators
+
 
 import { z } from 'zod';
 import { OrderModel } from '../api/clients/order.client';
@@ -11,9 +10,7 @@ import { createLogger } from '../core/logger';
 
 const logger = createLogger('OrderValidator');
 
-/**
- * Order schema validation using Zod
- */
+//Order schema validation using Zod
 const orderItemSchema = z.object({
   productId: z.string().min(1),
   quantity: z.number().min(1),
@@ -40,9 +37,7 @@ const orderSchema = z.object({
 });
 
 export class OrderValidator {
-  /**
-   * Validate order object
-   */
+  //Validate order object
   static validate(order: OrderModel): boolean {
     try {
       orderSchema.parse(order);
@@ -54,23 +49,19 @@ export class OrderValidator {
     }
   }
 
-  /**
-   * Validate order status
-   */
+  //Validate order status
   static validateStatus(status: string): boolean {
     const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
     const isValid = validStatuses.includes(status);
-    
+
     if (!isValid) {
       logger.warn('Invalid order status', { status });
     }
-    
+
     return isValid;
   }
 
-  /**
-   * Validate order total matches items
-   */
+  //Validate order total matches items
   static validateTotal(order: OrderModel): boolean {
     const calculatedTotal = order.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
@@ -90,9 +81,7 @@ export class OrderValidator {
     return isValid;
   }
 
-  /**
-   * Validate shipping address
-   */
+  //Validate shipping address
   static validateShippingAddress(address: OrderModel['shippingAddress']): boolean {
     try {
       shippingAddressSchema.parse(address);
@@ -104,9 +93,7 @@ export class OrderValidator {
     }
   }
 
-  /**
-   * Validate order items
-   */
+  //Validate order items
   static validateItems(items: OrderModel['items']): boolean {
     if (items.length === 0) {
       logger.error('Order must have at least one item');
@@ -129,9 +116,7 @@ export class OrderValidator {
     return true;
   }
 
-  /**
-   * Validate order can be cancelled
-   */
+  //Validate order can be cancelled
   static canBeCancelled(order: OrderModel): boolean {
     const cancellableStatuses = ['pending', 'processing'];
     const canCancel = cancellableStatuses.includes(order.status);
