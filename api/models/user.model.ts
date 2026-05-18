@@ -3,7 +3,6 @@
 
 //API Layer - Data Models
 
-
 export interface UserModel {
   id: string;
   email: string;
