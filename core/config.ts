@@ -8,6 +8,11 @@
   apiURL: string;
   env: string;
   screenshotsDir: string;
+  routes: {
+    login: string;
+    postLoginURLPattern: string;
+    employeeProfile: string;
+  };
   timeout: {
     action: number;
     navigation: number;
@@ -62,6 +67,11 @@ class ConfigManager {
       apiURL: requireEnv('API_URL'),
       env,
       screenshotsDir: process.env.SCREENSHOTS_DIR || 'screenshots',
+      routes: {
+        login: process.env.LOGIN_PATH || '/login',
+        postLoginURLPattern: process.env.POST_LOGIN_URL_PATTERN || '**/dashboard**',
+        employeeProfile: process.env.EMPLOYEE_PROFILE_PATH || '/employees/{empNumber}',
+      },
       timeout: {
         action: parseInt(process.env.ACTION_TIMEOUT || '30000', 10),
         navigation: parseInt(process.env.NAVIGATION_TIMEOUT || '60000', 10),
@@ -104,6 +114,10 @@ class ConfigManager {
 
   public getScreenshotsDir(): string {
     return this.config.screenshotsDir;
+  }
+
+  public getRoute(name: 'login' | 'postLoginURLPattern' | 'employeeProfile'): string {
+    return this.config.routes[name];
   }
 
   public getTimeout(type: 'action' | 'navigation' | 'test'): number {

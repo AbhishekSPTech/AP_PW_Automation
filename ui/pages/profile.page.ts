@@ -1,5 +1,5 @@
 // Profile Page Model
-// Handles user profile UI interactions
+// Handles employee Personal Details UI interactions
 
 // UI Layer - User Actions (validates via UI only)
 
@@ -7,78 +7,51 @@
 import { Page, expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 import { createLogger } from '../../core/logger';
-import { UserModel } from '../../api/models/user.model';
+import { config } from '../../core/config';
+import { EmployeeModel } from '../../api/models/employee.model';
 import { Locators } from '../locators';
 
 const logger = createLogger('ProfilePage');
 
 export class ProfilePage extends BasePage {
   // Locators — sourced from central locators.ts
+  private readonly pageHeading = this.page.getByRole(Locators.profile.pageHeading.role, { name: Locators.profile.pageHeading.name });
   private readonly nameDisplay = this.page.locator(Locators.profile.nameDisplay);
-  private readonly emailDisplay = this.page.locator(Locators.profile.emailDisplay);
-  private readonly roleDisplay = this.page.locator(Locators.profile.roleDisplay);
-  private readonly nameInput = this.page.locator(Locators.profile.nameInput);
-  private readonly editButton = this.page.locator(Locators.profile.editButton);
-  private readonly saveButton = this.page.locator(Locators.profile.saveButton);
-  private readonly successMessage = this.page.locator(Locators.common.successMessage);
-  private readonly errorMessage = this.page.locator(Locators.common.errorMessage);
+  private readonly firstNameInput = this.page.locator(Locators.profile.firstNameInput);
+  private readonly lastNameInput = this.page.locator(Locators.profile.lastNameInput);
 
   constructor(page: Page) {
     super(page);
+  }
+
+  // Navigate to a specific employee's Personal Details page
+
+  async navigateToEmployee(empNumber: number): Promise<void> {
+    logger.logStep('Navigate to employee profile', { empNumber });
+    await this.goto(config.getRoute('employeeProfile').replace('{empNumber}', String(empNumber)));
+    await this.waitForPageLoad();
   }
 
   //  Verify profile page is loaded
 
   async verifyLoaded(): Promise<void> {
     logger.logStep('Verify profile page loaded');
+    await expect(this.pageHeading).toBeVisible();
     await expect(this.nameDisplay).toBeVisible();
-    await expect(this.emailDisplay).toBeVisible();
   }
 
-  // Verify user details on profile page
+  // Verify employee details on profile page
 
-  async verifyUserDetails(user: UserModel): Promise<void> {
-    logger.logStep('Verify user details', { userId: user.id });
-    await expect(this.nameDisplay).toHaveText(user.name);
-    await expect(this.emailDisplay).toHaveText(user.email);
-    await expect(this.roleDisplay).toHaveText(user.role);
+  async verifyEmployeeDetails(employee: EmployeeModel): Promise<void> {
+    logger.logStep('Verify employee details', { empNumber: employee.empNumber });
+    await expect(this.nameDisplay).toHaveText(`${employee.firstName} ${employee.lastName}`);
+    await expect(this.firstNameInput).toHaveValue(employee.firstName);
+    await expect(this.lastNameInput).toHaveValue(employee.lastName);
   }
 
-  //Update user name via UI
+  // Get displayed employee name
 
-  async updateUserName(newName: string): Promise<void> {
-    logger.logStep('Update user name', { newName });
-    await this.click(this.editButton);
-    await this.fill(this.nameInput, newName);
-    await this.click(this.saveButton);
-    await this.waitForPageLoad();
-  }
-
-  // Verify success message
-
-  async verifySuccessMessage(expectedMessage: string): Promise<void> {
-    logger.logStep('Verify success message');
-    await expect(this.successMessage).toBeVisible();
-    await expect(this.successMessage).toContainText(expectedMessage);
-  }
-
-  // Verify error message
-
-  async verifyErrorMessage(expectedMessage: string): Promise<void> {
-    logger.logStep('Verify error message');
-    await expect(this.errorMessage).toBeVisible();
-    await expect(this.errorMessage).toContainText(expectedMessage);
-  }
-
-  // Get displayed user name
-
-  async getDisplayedUserName(): Promise<string> {
+  async getDisplayedName(): Promise<string> {
     return await this.getText(this.nameDisplay);
-  }
-
-  // Get displayed user email
-
-  async getDisplayedUserEmail(): Promise<string> {
-    return await this.getText(this.emailDisplay);
   }
 }

@@ -9,18 +9,17 @@ export const Locators = {
     submitButton: 'button[type="submit"]',
   },
   dashboard: {
+    navLink: { role: 'link' as const, name: 'Dashboard' },
     profilePicture: { name: 'profile picture' },
+    myInfoLink: { role: 'link' as const, name: 'My Info' },
   },
   profile: {
-    nameDisplay: '[data-testid="user-name"]',
-    emailDisplay: '[data-testid="user-email"]',
-    roleDisplay: '[data-testid="user-role"]',
-    nameInput: '#name',
-    editButton: 'button:has-text("Edit Profile")',
-    saveButton: 'button:has-text("Save")',
+    pageHeading: { role: 'heading' as const, name: 'Personal Details' },
+    nameDisplay: '.orangehrm-edit-employee-name h6',
+    firstNameInput: 'input[name="firstName"]',
+    lastNameInput: 'input[name="lastName"]',
   },
   common: {
-    successMessage: '[data-testid="success-message"]',
-    errorMessage: '[data-testid="error-message"]',
+    errorMessage: '[role="alert"]',
   },
 };

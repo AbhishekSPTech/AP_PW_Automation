@@ -6,6 +6,7 @@
 
 import { test as setup, expect } from '@playwright/test';
 import { config } from '../core/config';
+import { Locators } from '../ui/locators';
 import path from 'path';
 
 const authFile = path.resolve(__dirname, 'auth/client.user.json');
@@ -18,20 +19,20 @@ setup('authenticate admin user', async ({ page, request }) => {
   const credentials = config.getCredentials('adminUser');
 
   // Navigate to login page
-  await page.goto(`${config.getBaseURL()}/web/index.php/auth/login`);
+  await page.goto(`${config.getBaseURL()}${config.getRoute('login')}`);
 
   // Fill in credentials
-  await page.getByRole('textbox', { name: 'Username' }).fill(credentials.Username);
-  await page.getByRole('textbox', { name: 'Password' }).fill(credentials.password);
+  await page.getByRole(Locators.login.usernameInput.role, { name: Locators.login.usernameInput.name }).fill(credentials.Username);
+  await page.getByRole(Locators.login.passwordInput.role, { name: Locators.login.passwordInput.name }).fill(credentials.password);
 
   // Click login button
-  await page.getByRole('button', { name: 'Login' }).click();
+  await page.locator(Locators.login.submitButton).click();
 
   // Wait for successful login (adjust selector based on your app)
-  await page.waitForURL('**/dashboard/index', { timeout: config.getTimeout('action') });
+  await page.waitForURL(config.getRoute('postLoginURLPattern'), { timeout: config.getTimeout('action') });
 
   // Verify login was successful
-  await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
+  await expect(page.getByRole(Locators.dashboard.navLink.role, { name: Locators.dashboard.navLink.name })).toBeVisible();
 
   // Save authenticated state
   await page.context().storageState({ path: authFile });
