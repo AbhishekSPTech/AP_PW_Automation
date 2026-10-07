@@ -5,8 +5,10 @@
 export { BaseAPIClient } from './api/base.client';
 export { AuthClient } from './api/clients/auth.client';
 export { UserClient } from './api/clients/user.client';
+export { EmployeeClient } from './api/clients/employee.client';
 export { OrderClient } from './api/clients/order.client';
 export { UserModel, UserBuilder } from './api/models/user.model';
+export { EmployeeModel, EmployeeBuilder } from './api/models/employee.model';
 
 // UI Layer
 export { BasePage } from './ui/base.page';
@@ -22,6 +24,7 @@ export { ProfilePage } from './ui/pages/profile.page';
 
 // Validators
 export { UserValidator } from './validators/user.validator';
+export { EmployeeValidator } from './validators/employee.validator';
 export { OrderValidator } from './validators/order.validator';
 
 // Core (Framework Only - Not for Tests)

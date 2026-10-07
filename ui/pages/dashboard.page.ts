@@ -13,6 +13,7 @@ const logger = createLogger('DashboardPage');
 export class DashboardPage extends BasePage {
   // Locators — sourced from central locators.ts
   private readonly profilePicture = this.page.getByRole('banner').getByRole('img', { name: Locators.dashboard.profilePicture.name });
+  private readonly myInfoLink = this.page.getByRole(Locators.dashboard.myInfoLink.role, { name: Locators.dashboard.myInfoLink.name });
 
   constructor(page: Page) {
     super(page);
@@ -31,7 +32,7 @@ export class DashboardPage extends BasePage {
 
   async goToProfile(): Promise<void> {
     logger.logStep('Navigate to profile page');
-    await this.click(this.profilePicture);
+    await this.click(this.myInfoLink);
     await this.waitForPageLoad();
   }
 }

@@ -3,7 +3,6 @@
 
 //API Layer - Data Control
 
-
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import { createLogger } from '../core/logger';
 import { config } from '../core/config';
@@ -129,10 +128,11 @@ export class BaseAPIClient {
     options: RequestOptions = {}
   ): Promise<APIResponse> {
     const url = `${this.baseURL}${endpoint}`;
-    logger.logRequest('DELETE', url);
+    logger.logRequest('DELETE', url, options.data);
 
     const response = await this.request.delete(url, {
       headers: options.headers,
+      data: options.data,
     });
 
     logger.logResponse(response.status(), url);
