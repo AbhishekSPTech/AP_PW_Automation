@@ -15,7 +15,7 @@
 import { Page } from '@playwright/test';
 import { BasePage } from '../base.page';
 import { createLogger } from '../../core/logger';
-import { UserModel } from '../../api/models/user.model';
+import { EmployeeModel } from '../../api/models/employee.model';
 import { LoginPage } from '../pages/login.page';
 import { DashboardPage } from '../pages/dashboard.page';
 import { ProfilePage } from '../pages/profile.page';
@@ -65,27 +65,19 @@ export class UserPage extends BasePage {
     await this.profilePage.verifyLoaded();
   }
 
-  async verifyUserDetails(user: UserModel): Promise<void> {
-    await this.profilePage.verifyUserDetails(user);
+  async navigateToEmployeeProfile(empNumber: number): Promise<void> {
+    await this.profilePage.navigateToEmployee(empNumber);
   }
 
-  async updateUserName(newName: string): Promise<void> {
-    await this.profilePage.updateUserName(newName);
+  async verifyEmployeeDetails(employee: EmployeeModel): Promise<void> {
+    await this.profilePage.verifyEmployeeDetails(employee);
   }
 
-  async verifySuccessMessage(expectedMessage: string): Promise<void> {
-    await this.profilePage.verifySuccessMessage(expectedMessage);
+  async getDisplayedName(): Promise<string> {
+    return await this.profilePage.getDisplayedName();
   }
 
   async verifyErrorMessage(expectedMessage: string): Promise<void> {
-    await this.profilePage.verifyErrorMessage(expectedMessage);
-  }
-
-  async getDisplayedUserName(): Promise<string> {
-    return await this.profilePage.getDisplayedUserName();
-  }
-
-  async getDisplayedUserEmail(): Promise<string> {
-    return await this.profilePage.getDisplayedUserEmail();
+    await this.loginPage.verifyErrorMessage(expectedMessage);
   }
 }

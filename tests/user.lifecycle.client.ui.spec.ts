@@ -1,105 +1,95 @@
 //User Lifecycle Test
-//Tests complete user lifecycle(create, verify, update, delete)
+//Tests complete employee lifecycle(create, verify, update, delete)
 
 //Business Flow - Data via API, Validation via UI
 
 import { test, expect } from '@playwright/test';
-import { UserClient } from '../api/clients/user.client';
+import { EmployeeClient } from '../api/clients/employee.client';
 import { UserPage } from '../ui/models/user.model';
-import { UserBuilder } from '../api/models/user.model';
+import { EmployeeBuilder } from '../api/models/employee.model';
+import { EmployeeValidator } from '../validators/employee.validator';
 import { UserValidator } from '../validators/user.validator';
-import { TEST_PASSWORD, WEAK_PASSWORD, STRONG_PASSWORD } from '../fixtures/test-data';
+import { WEAK_PASSWORD, STRONG_PASSWORD } from '../fixtures/test-data';
 
 test.describe('User Lifecycle', () => {
-  let userClient: UserClient;
+  let employeeClient: EmployeeClient;
   let userPage: UserPage;
-  let testUserId: string;
+  let testEmpNumber: number | undefined;
 
   test.beforeEach(async ({ request, page }) => {
-    userClient = new UserClient(request);
+    employeeClient = new EmployeeClient(request);
     userPage = new UserPage(page);
+    testEmpNumber = undefined;
   });
 
   test.afterEach(async () => {
-    // Cleanup - Delete created user via API
-    if (testUserId) {
+    // Cleanup - Delete created employee via API
+    if (testEmpNumber) {
       try {
-        await userClient.deleteUser(testUserId);
+        await employeeClient.deleteEmployee(testEmpNumber);
       } catch (error) {
-        console.log('Cleanup error (user may not exist):', error);
+        console.log('Cleanup error (employee may not exist):', error);
       }
     }
   });
 
-  test('should create user via API and verify via UI', async () => {
+  test('should create employee via API and verify via UI', async () => {
     // Arrange - Create test data
-    const userData = UserBuilder.createRandomUser();
+    const employeeData = EmployeeBuilder.createRandomEmployee();
 
     // Act - Setup data via API
-    const createdUser = await userClient.createUser({
-      email: userData.email,
-      name: userData.name,
-      password: TEST_PASSWORD,
-    });
+    const createdEmployee = await employeeClient.createEmployee(employeeData);
 
-    testUserId = createdUser.id;
+    testEmpNumber = createdEmployee.empNumber;
 
     // Validate data
-    UserValidator.validate(createdUser);
+    EmployeeValidator.validate(createdEmployee);
 
     // Act - Verify via UI
-    await userPage.navigateToProfile();
+    await userPage.navigateToEmployeeProfile(createdEmployee.empNumber);
 
     // Assert - Validates via UI only
-    await userPage.verifyUserDetails(createdUser);
+    await userPage.verifyEmployeeDetails(createdEmployee);
   });
 
-  test('should update user via API and verify changes via UI', async () => {
-    // Arrange - Create user via API
-    const userData = UserBuilder.createRandomUser();
-    const createdUser = await userClient.createUser({
-      email: userData.email,
-      name: userData.name,
-      password: TEST_PASSWORD,
-    });
+  test('should update employee via API and verify changes via UI', async () => {
+    // Arrange - Create employee via API
+    const employeeData = EmployeeBuilder.createRandomEmployee();
+    const createdEmployee = await employeeClient.createEmployee(employeeData);
 
-    testUserId = createdUser.id;
+    testEmpNumber = createdEmployee.empNumber;
 
-    // Act - Update user via API
-    const updatedName = `Updated ${userData.name}`;
-    const updatedUser = await userClient.updateUser(testUserId, {
-      name: updatedName,
+    // Act - Update employee via API
+    const updatedFirstName = `Updated${employeeData.firstName}`;
+    const updatedEmployee = await employeeClient.updateEmployee(createdEmployee.empNumber, {
+      firstName: updatedFirstName,
     });
 
     // Validate update
-    expect(updatedUser.name).toBe(updatedName);
+    expect(updatedEmployee.firstName).toBe(updatedFirstName);
 
     // Act - Verify via UI
-    await userPage.navigateToProfile();
+    await userPage.navigateToEmployeeProfile(createdEmployee.empNumber);
 
     // Assert - Validates via UI only
-    const displayedName = await userPage.getDisplayedUserName();
-    expect(displayedName).toBe(updatedName);
+    await userPage.verifyEmployeeDetails(updatedEmployee);
   });
 
-  test('should retrieve user by email via API', async () => {
-    // Arrange - Create user via API
-    const userData = UserBuilder.createRandomUser();
-    const createdUser = await userClient.createUser({
-      email: userData.email,
-      name: userData.name,
-      password: TEST_PASSWORD,
-    });
+  test('should find employee by name via API', async () => {
+    // Arrange - Create employee via API
+    const employeeData = EmployeeBuilder.createRandomEmployee();
+    const createdEmployee = await employeeClient.createEmployee(employeeData);
 
-    testUserId = createdUser.id;
+    testEmpNumber = createdEmployee.empNumber;
 
-    // Act - Retrieve user by email via API
-    const retrievedUser = await userClient.getUserByEmail(userData.email);
+    // Act - Search employee by last name via API
+    const results = await employeeClient.searchEmployees(employeeData.lastName);
 
     // Assert - API response validation
-    expect(retrievedUser.id).toBe(createdUser.id);
-    expect(retrievedUser.email).toBe(userData.email);
-    UserValidator.validate(retrievedUser);
+    expect(results).toHaveLength(1);
+    expect(results[0].empNumber).toBe(createdEmployee.empNumber);
+    expect(results[0].lastName).toBe(employeeData.lastName);
+    EmployeeValidator.validate(results[0]);
   });
 
   test('should validate email format', async () => {

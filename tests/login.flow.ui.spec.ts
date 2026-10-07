@@ -38,12 +38,12 @@ test.describe('Login Flow', () => {
     await userPage.login(INVALID_CREDENTIALS.Username, INVALID_CREDENTIALS.password);
 
     // Assert - Validates via UI
-    await userPage.verifyErrorMessage('Invalid email or password');
+    await userPage.verifyErrorMessage('Invalid credentials');
   });
 
   test('should navigate to profile after login', async () => {
     // Arrange
-    const credentials = config.getCredentials('clientUser');
+    const credentials = config.getCredentials('adminUser');
 
     // Act
     await userPage.navigateToLogin();

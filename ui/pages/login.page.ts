@@ -6,6 +6,7 @@
 import { Page, expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 import { createLogger } from '../../core/logger';
+import { config } from '../../core/config';
 import { Locators } from '../locators';
 
 const logger = createLogger('LoginPage');
@@ -24,7 +25,7 @@ export class LoginPage extends BasePage {
     // Navigate to login page
     async navigate(): Promise<void> {
         logger.logStep('Navigate to login page');
-        await this.goto('/web/index.php/auth/login');
+        await this.goto(config.getRoute('login'));
         await this.waitForPageLoad();
     }
 
