@@ -80,3 +80,7 @@ test('user lifecycle', async ({ page, request }) => {
   await userPage.verifyUserDetails(user);
 });
 ```
+
+## Self-Healing Locators
+
+Broken locators can be repaired at runtime and proposed as fixes to `ui/locators.ts`. See [SELF_HEALING.md](SELF_HEALING.md) for the flow, setup and the `heal:report` / `heal:apply` commands.

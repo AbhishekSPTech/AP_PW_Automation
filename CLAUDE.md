@@ -100,3 +100,4 @@ Detailed documentation lives in `framework_guide/`:
 - `GETTING_STARTED.md` — first-time setup walkthrough
 - `QUICK_REFERENCE.md` — commands, conventions, and patterns at a glance
 - `VISUAL_ARCHITECTURE.md` — diagrams of data flow and layer communication
+- `SELF_HEALING.md` — self-healing locator flow, AI providers, `npm run heal:report` / `heal:apply`

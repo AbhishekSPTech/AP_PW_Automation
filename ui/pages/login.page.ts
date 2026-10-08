@@ -7,16 +7,15 @@ import { Page, expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 import { createLogger } from '../../core/logger';
 import { config } from '../../core/config';
-import { Locators } from '../locators';
 
 const logger = createLogger('LoginPage');
 
 export class LoginPage extends BasePage {
-    // Locators — sourced from central locators.ts
-    private readonly usernameInput = this.page.getByRole(Locators.login.usernameInput.role, { name: Locators.login.usernameInput.name });
-    private readonly passwordInput = this.page.getByRole(Locators.login.passwordInput.role, { name: Locators.login.passwordInput.name });
-    private readonly submitButton = this.page.locator(Locators.login.submitButton);
-    private readonly errorMessage = this.page.locator(Locators.common.errorMessage);
+    // Locators — sourced from central locators.ts (self-healing)
+    private readonly usernameInput = this.loc('login.usernameInput');
+    private readonly passwordInput = this.loc('login.passwordInput');
+    private readonly submitButton = this.loc('login.submitButton');
+    private readonly errorMessage = this.loc('common.errorMessage');
 
     constructor(page: Page) {
         super(page);
@@ -41,15 +40,16 @@ export class LoginPage extends BasePage {
     // Verify login form elements are visible
     async verifyLoginFormVisible(): Promise<void> {
         logger.logStep('Verify login form visible');
-        await expect(this.usernameInput).toBeVisible();
-        await expect(this.passwordInput).toBeVisible();
-        await expect(this.submitButton).toBeVisible();
+        await expect(await this.resolve(this.usernameInput)).toBeVisible();
+        await expect(await this.resolve(this.passwordInput)).toBeVisible();
+        await expect(await this.resolve(this.submitButton)).toBeVisible();
     }
 
     // Verify error message on login failure
     async verifyErrorMessage(expectedMessage: string): Promise<void> {
         logger.logStep('Verify error message');
-        await expect(this.errorMessage).toBeVisible();
-        await expect(this.errorMessage).toContainText(expectedMessage);
+        const errorMessage = await this.resolve(this.errorMessage);
+        await expect(errorMessage).toBeVisible();
+        await expect(errorMessage).toContainText(expectedMessage);
     }
 }

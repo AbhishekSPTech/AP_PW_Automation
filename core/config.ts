@@ -22,6 +22,13 @@
     attempts: number;
     delay: number;
   };
+  healing: {
+    enabled: boolean;
+    provider: string;
+    model?: string;
+    probeTimeout: number;
+    minConfidence: number;
+  };
   credentials: {
     clientUser: {
       email: string;
@@ -81,6 +88,13 @@ class ConfigManager {
         attempts: parseInt(process.env.RETRY_ATTEMPTS || '3', 10),
         delay: parseInt(process.env.RETRY_DELAY || '1000', 10),
       },
+      healing: {
+        enabled: process.env.HEALING_ENABLED === 'true',
+        provider: process.env.HEALING_PROVIDER || 'none',
+        model: process.env.HEALING_MODEL,
+        probeTimeout: parseInt(process.env.HEALING_PROBE_TIMEOUT || '5000', 10),
+        minConfidence: parseFloat(process.env.HEALING_MIN_CONFIDENCE || '0.7'),
+      },
       credentials: {
         clientUser: {
           email: requireEnv('CLIENT_USER_EMAIL'),
@@ -122,6 +136,10 @@ class ConfigManager {
 
   public getTimeout(type: 'action' | 'navigation' | 'test'): number {
     return this.config.timeout[type];
+  }
+
+  public getHealing() {
+    return this.config.healing;
   }
 
   public getCredentials(userType: 'clientUser' | 'adminUser') {

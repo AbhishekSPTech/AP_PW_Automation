@@ -10,7 +10,7 @@ export const Locators = {
   },
   dashboard: {
     navLink: { role: 'link' as const, name: 'Dashboard' },
-    profilePicture: { name: 'profile picture' },
+    profilePicture: 'header img[alt="profile picture"]',
     myInfoLink: { role: 'link' as const, name: 'My Info' },
   },
   profile: {
