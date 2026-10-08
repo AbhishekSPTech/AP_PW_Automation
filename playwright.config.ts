@@ -5,6 +5,11 @@ import path from 'path';
 // Load environment variables
 const env = process.env.ENV || 'qa';
 
+// Optional, gitignored local overrides (e.g. ANTHROPIC_API_KEY / OPENAI_API_KEY) - loaded first so they win
+dotenv.config({
+  path: path.resolve(__dirname, './env/.env.local'),
+});
+
 dotenv.config({
   path: path.resolve(__dirname, `./env/.env.${env}`),
 });

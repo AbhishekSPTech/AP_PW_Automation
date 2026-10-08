@@ -6,6 +6,8 @@ yarn.lock
 # Test results
 test-results/
 playwright-report/
+healing-reports/
+env/.env.local
 allure-results/
 allure-report/
 screenshots/

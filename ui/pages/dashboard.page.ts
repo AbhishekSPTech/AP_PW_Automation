@@ -6,14 +6,13 @@
 import { Page, expect } from '@playwright/test';
 import { BasePage } from '../base.page';
 import { createLogger } from '../../core/logger';
-import { Locators } from '../locators';
 
 const logger = createLogger('DashboardPage');
 
 export class DashboardPage extends BasePage {
-  // Locators — sourced from central locators.ts
-  private readonly profilePicture = this.page.getByRole('banner').getByRole('img', { name: Locators.dashboard.profilePicture.name });
-  private readonly myInfoLink = this.page.getByRole(Locators.dashboard.myInfoLink.role, { name: Locators.dashboard.myInfoLink.name });
+  // Locators — sourced from central locators.ts (self-healing)
+  private readonly profilePicture = this.loc('dashboard.profilePicture');
+  private readonly myInfoLink = this.loc('dashboard.myInfoLink');
 
   constructor(page: Page) {
     super(page);
@@ -24,7 +23,7 @@ export class DashboardPage extends BasePage {
 
   async verifyLoggedIn(): Promise<void> {
     logger.logStep('Verify user is logged in');
-    await expect(this.profilePicture).toBeVisible();
+    await expect(await this.resolve(this.profilePicture)).toBeVisible();
   }
 
 
